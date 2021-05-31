@@ -24,6 +24,7 @@ extern "C" {
 #define ACK_STATUS_ID    0x5UL
 
 #define TERM_SYSCALL_ID  0x6UL
+#define SCAN_SYSCALL_ID  0x7UL
 
 #define DEFAULT_PROXY_ENDPOINT  0xFFUL
 
