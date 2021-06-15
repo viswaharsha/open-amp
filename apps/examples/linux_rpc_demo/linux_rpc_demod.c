@@ -3,8 +3,8 @@
  */
 
 /* This is a sample demonstration application that showcases usage of proxy from the remote core. 
- This application is meant to run on the remote CPU running baremetal.
- This applicationr can print to to master console and perform file I/O using proxy mechanism. */
+ This application is meant to run on the remote CPU running linux.
+ This application can print to the master console and perform file I/O through rpmsg channels. */
 
 #include <errno.h>
 #include <stdio.h>
@@ -97,6 +97,7 @@ static int handle_close(struct rpmsg_rpc_syscall *syscall,
 
 	if (!syscall || !ept)
 		return -EINVAL;
+		
 	/* Close remote fd */
 	ret = close(syscall->args.int_field1);
 
@@ -192,17 +193,20 @@ static int handle_scanf(struct rpmsg_rpc_syscall *syscall,
 	if (!syscall || !ept)
 		return -EINVAL;
 	payload = buf + sizeof(*resp);
+	
+	/* Input from remote */
 	scanf("%s", payload);
 	bytes_read = sizeof(payload);
+	
 	/* Construct rpc response */
 	resp = (struct rpmsg_rpc_syscall *)buf;
 	resp->id = SCAN_SYSCALL_ID;
 	resp->args.int_field1 = bytes_read;
 	resp->args.int_field2 = 0;	/* not used */
 	resp->args.data_len = bytes_read;
-
 	payload_size = sizeof(*resp) +
 		       ((bytes_read > 0) ? bytes_read : 0);
+		       
 	/* Transmit rpc response */
 	ret = rpmsg_send(ept, buf, payload_size);
 	return ret > 0 ?  0 : ret;

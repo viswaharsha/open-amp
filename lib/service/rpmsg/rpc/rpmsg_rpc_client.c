@@ -1,7 +1,4 @@
 /*
- * Copyright (c) 2014, Mentor Graphics Corporation
- * All rights reserved.
- *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -17,10 +14,9 @@
 
 /*************************************************************************
  *	Description
- *	This files contains rpmsg based redefinitions for C RTL system calls
- *	such as _open, _read, _write, _close.
+ *	This files contains rpmsg based definitions for rpmsg_open, 
+ *	rpmsg_read, rpmsg_write, rpmsg_close to perform file operations
  *************************************************************************/
-
 static struct rpmsg_rpc_data *rpmsg_default_rpc;
 
 void linux_rpmsg_set_default_rpc(struct rpmsg_rpc_data *rpc)
@@ -34,11 +30,11 @@ void linux_rpmsg_set_default_rpc(struct rpmsg_rpc_data *rpc)
  *
  *   FUNCTION
  *
- *       _open
+ *       rpmsg_open
  *
  *   DESCRIPTION
  *
- *       Open a file.  Minimal implementation
+ *       Open a file.
  *
  *************************************************************************/
 #define MAX_BUF_LEN 496UL
@@ -86,11 +82,11 @@ int rpmsg_open(const char *filename, int flags, int mode)
  *
  *   FUNCTION
  *
- *       _read
+ *       rpmsg_read
  *
  *   DESCRIPTION
  *
- *       Low level function to redirect IO to serial.
+ *       Read data through RPMsg channel
  *
  *************************************************************************/
 int rpmsg_read(int fd, char *buffer, int buflen)
@@ -141,11 +137,11 @@ int rpmsg_read(int fd, char *buffer, int buflen)
  *
  *   FUNCTION
  *
- *       _write
+ *       rpmsg_write
  *
  *   DESCRIPTION
  *
- *       Low level function to redirect IO to serial.
+ *       Write data through RPMsg channel
  *
  *************************************************************************/
 int rpmsg_write(int fd, const char *ptr, int len)
@@ -194,11 +190,11 @@ int rpmsg_write(int fd, const char *ptr, int len)
  *
  *   FUNCTION
  *
- *       _close
+ *       rpmsg_close
  *
  *   DESCRIPTION
  *
- *       Close a file.  Minimal implementation
+ *       Close a file.
  *
  *************************************************************************/
 int rpmsg_close(int fd)
@@ -238,7 +234,7 @@ int rpmsg_close(int fd)
  *
  *   DESCRIPTION
  *
- *       Low level function to redirect IO to serial.
+ *       Input operation through RPMsg channel.
  *
  *************************************************************************/
 int rpmsg_scanf(char *buffer, int buflen)
